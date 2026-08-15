@@ -4922,18 +4922,13 @@ function createPDFSummaryAndFinish(
         ],
 
         [
-            "Power requirements:",
-            "Three phase (400 V) power to be provided at the outdoor (within 5 m of each unit) and single phase (210 V) power to each indoor unit (within 1 m of each unit) with necessary accessories."
-        ],
-
-        [
             "Support required:",
             "Access to site, water and electricity. Safe custody of equipment, tools and installation materials at site."
         ],
 
         [
             "Operating temperature:",
-            "Kindly note that the system's ideal operating temperature is minimum of 22-24 Degrees Celsius."
+            "Kindly note that the system's ideal operating temperature is minimum of 18-30 Degrees Celsius."
         ]
 
     ];
