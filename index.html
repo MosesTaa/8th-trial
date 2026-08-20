@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#075985"
+    >
+
+    <meta
+        name="description"
+        content="Mobile HVAC supply and commissioning quotation system"
+    >
+
+    <title>Onsite Quotation</title>
+
+    <style>
+        :root {
+            --primary: #075985;
+            --primary-dark: #0c4a6e;
+            --secondary: #e0f2fe;
+            --background: #f1f5f9;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #cbd5e1;
+            --danger: #b91c1c;
+            --radius: 14px;
+            --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-width: 280px;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        .top-header {
+            padding:
+                20px
+                max(16px, env(safe-area-inset-right))
+                20px
+                max(16px, env(safe-area-inset-left));
+
+            color: #ffffff;
+            text-align: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary-dark),
+                    var(--primary)
+                );
+
+            box-shadow: var(--shadow);
+        }
+
+        .top-header h1 {
+            margin: 0;
+            font-size: clamp(1.55rem, 6vw, 2.2rem);
+        }
+
+        .top-header p {
+            margin: 5px 0 0;
+            opacity: 0.9;
+        }
+
+        .app-container {
+            width: min(100% - 24px, 920px);
+            margin: 22px auto;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-heading {
+            margin: 0 0 15px;
+        }
+
+        .page-heading h2 {
+            margin: 0 0 5px;
+            font-size: clamp(1.3rem, 5vw, 1.75rem);
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .card {
+            margin-bottom: 16px;
+            padding: clamp(16px, 4vw, 24px);
+            background: var(--surface);
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card h2,
+        .card h3 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin: 0 0 15px;
+            color: #334155;
+            font-weight: 700;
+        }
+
+        input:not([type="checkbox"]),
+        select,
+        textarea {
+            display: block;
+            width: 100%;
+            min-height: 48px;
+            margin-top: 7px;
+            padding: 11px 12px;
+            color: var(--text);
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        button {
+            min-height: 48px;
+            padding: 11px 16px;
+            border: 0;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .primary-button {
+            color: #ffffff;
+            background: var(--primary);
+        }
+
+        .primary-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .secondary-button {
+            color: var(--primary-dark);
+            background: var(--secondary);
+            border: 1px solid #7dd3fc;
+        }
+
+        .danger-button,
+        .delete-button {
+            color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .full-width {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .button-row,
+        .preview-controls,
+        .quotation-type-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .room-input-row,
+        .input-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 48px;
+            gap: 8px;
+            align-items: end;
+            margin-bottom: 10px;
+        }
+
+        .room-input-row input {
+            margin: 0;
+        }
+
+        .remove-input {
+            min-width: 48px;
+            padding: 0;
+            color: var(--danger);
+            background: #fee2e2;
+            font-size: 1.5rem;
+        }
+
+        .info-box,
+        .empty-message {
+            margin: 12px 0;
+            padding: 13px;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 560px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            color: #ffffff;
+            background: var(--primary);
+        }
+
+        td.number,
+        th.number,
+        .number {
+            text-align: right;
+        }
+
+        .quotation-document {
+            padding: clamp(12px, 3vw, 28px);
+            background: #ffffff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        .quotation-document > h1 {
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .quotation-section {
+            margin: 22px 0;
+        }
+
+        .quotation-section h3 {
+            color: var(--primary);
+        }
+
+        .grand-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 14px;
+            color: #ffffff;
+            background: var(--primary);
+            border-radius: 10px;
+            font-weight: 800;
+        }
+
+        .site-footer {
+            padding:
+                22px
+                16px
+                calc(22px + env(safe-area-inset-bottom));
+
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .site-footer p {
+            margin: 5px 0;
+        }
+
+        .site-footer a {
+            color: var(--primary);
+        }
+
+        @media (max-width: 620px) {
+            .app-container {
+                width: min(100% - 18px, 920px);
+                margin-top: 14px;
+            }
+
+            .button-row,
+            .preview-controls,
+            .quotation-type-options {
+                grid-template-columns: 1fr;
+            }
+
+            .button-row button,
+            .preview-controls button {
+                width: 100%;
+            }
+
+            .grand-total {
+                flex-direction: column;
+            }
+        }
+
+        @media print {
+            body {
+                background: #ffffff;
+            }
+
+            .top-header,
+            .site-footer,
+            .preview-controls {
+                display: none !important;
+            }
+
+            .app-container {
+                width: 100%;
+                margin: 0;
+            }
+
+            .quotation-document {
+                padding: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+
+    <!-- PDF LIBRARIES -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js">
+    </script>
+</head>
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="top-header">
+
+        <h1>
+            Onsite Quotation
+        </h1>
+
+        <p>
+            HVAC Supply and Installation Quotation System
+        </p>
+
+    </header>
+
+
+    <!-- =====================================================
+         APPLICATION
+    ====================================================== -->
+
+    <main class="app-container">
+
+        <!--
+            PAGE 0: QUOTATION TYPE
+
+            This page is automatically created by script.js.
+        -->
+
+
+        <!-- =================================================
+             PAGE 1: ROOMS
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page1"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Rooms Requiring Air Conditioning
+                </h2>
+
+                <p>
+                    Enter each room that the proposed AC equipment
+                    will serve.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div id="roomInputContainer">
+
+                    <div class="input-row room-input-row">
+
+                        <input
+                            type="text"
+                            class="room-name-input"
+                            placeholder="e.g. Living Room"
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            class="remove-input"
+                            onclick="removeRoomInput(this)"
+                            aria-label="Remove room input"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="secondary-button full-width"
+                    onclick="addRoomInput()"
+                >
+                    + Add Another Room
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button full-width"
+                    onclick="saveRooms()"
+                >
+                    Preview Rooms →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 2: ROOM PREVIEW
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page2"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Room Preview
+                </h2>
+
+                <p>
+                    Confirm, rename or delete rooms before continuing.
+                </p>
+
+            </div>
+
+
+            <div id="roomPreview"></div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="showPage(1)"
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="goToDimensions()"
+                >
+                    Proceed to Dimensions →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 3: DIMENSIONS
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page3"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Room Dimensions
+                </h2>
+
+                <p>
+                    Enter the length and width of every room in metres.
+                </p>
+
+            </div>
+
+
+            <div id="dimensionInputs"></div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="showPage(2)"
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="previewDimensions()"
+                >
+                    Preview Dimensions →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 4: DIMENSIONS PREVIEW
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page4"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Dimensions Preview
+                </h2>
+
+                <p>
+                    Confirm the dimensions and calculated room areas.
+                </p>
+
+            </div>
+
+
+            <div id="dimensionPreview"></div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="showPage(3)"
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="goToCopper()"
+                >
+                    Continue →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 5: COPPER AND DRAINAGE
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page5"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Copper and Drainage Lengths
+                </h2>
+
+                <p>
+                    Enter the required lengths for every room.
+                </p>
+
+            </div>
+
+
+            <div id="copperInputs"></div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="showPage(4)"
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="previewCopper()"
+                >
+                    Preview Lengths →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 6: COPPER AND DRAINAGE PREVIEW
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page6"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Copper and Drainage Preview
+                </h2>
+
+                <p>
+                    Confirm all entered pipe lengths.
+                </p>
+
+            </div>
+
+
+            <div id="copperPreview"></div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="showPage(5)"
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="goToCoolingLoad()"
+                >
+                    Proceed to Cooling Load →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 7: COOLING LOAD
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page7"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Cooling Load Factor
+                </h2>
+
+                <p>
+                    Enter the cooling-load factor for every room.
+                </p>
+
+            </div>
+
+
+            <div id="coolingLoadInputs"></div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="
+                        isSupplyOnly()
+                            ? showPage(4)
+                            : showPage(6)
+                    "
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="previewCoolingLoad()"
+                >
+                    Preview AC Recommendation →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 8: AC RECOMMENDATION
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page8"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    AC Recommendation Preview
+                </h2>
+
+                <p>
+                    Review or change each capacity, AC type and brand.
+                </p>
+
+            </div>
+
+
+            <div id="coolingLoadPreview"></div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="showPage(7)"
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="goToACPrices()"
+                >
+                    Proceed to AC Prices →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 9: AC PRICES
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page9"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    AC Equipment Prices
+                </h2>
+
+                <p>
+                    Enter the unit price for every selected equipment
+                    combination.
+                </p>
+
+            </div>
+
+
+            <div id="acPriceInputs"></div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="showPage(8)"
+                >
+                    ← Back
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="saveACPrices()"
+                >
+                    Continue →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 10: MATERIAL RATES
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page10"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Material Rates
+                </h2>
+
+                <p>
+                    Enter the applicable copper and drainage rates.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <label>
+
+                    Copper Rate (KES per metre)
+
+                    <input
+                        id="copperRate"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value="3200"
+                        inputmode="decimal"
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Drainage Rate (KES per metre)
+
+                    <input
+                        id="drainageRate"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                        inputmode="decimal"
+                    >
+
+                </label>
+
+
+                <div class="button-row">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="showPage(9)"
+                    >
+                        ← Back
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        onclick="saveMaterialRates()"
+                    >
+                        Proceed to Installation →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 11: INSTALLATION COMMISSIONING
+
+             The JavaScript automatically adds the installation
+             form inside this section.
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page11"
+        ></section>
+
+
+        <!-- =================================================
+             PAGE 12: ACCESSORIES
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page12"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Installation Commissioning &amp; Accessories
+                </h2>
+
+                <p>
+                    Add accessories and optional quotation items.
+                </p>
+
+            </div>
+
+
+            <div id="additionalItems"></div>
+
+
+            <button
+                type="button"
+                class="secondary-button full-width"
+                onclick="goToInstallationCosts()"
+            >
+                ← Back to Installation
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 13: CLIENT DETAILS
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page13"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Client Details
+                </h2>
+
+                <p>
+                    Enter the client and sales contact information.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <label>
+
+                    Client Name *
+
+                    <input
+                        id="clientName"
+                        type="text"
+                        placeholder="Enter client name"
+                        autocomplete="organization"
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Installation / Delivery Location *
+
+                    <input
+                        id="installationLocation"
+                        type="text"
+                        placeholder="Enter project location"
+                        autocomplete="street-address"
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Sales Person
+
+                    <input
+                        id="salesPerson"
+                        type="text"
+                        placeholder="Enter salesperson name"
+                        autocomplete="name"
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Sales Phone
+
+                    <input
+                        id="salesPhone"
+                        type="tel"
+                        placeholder="e.g. +254 700 000 000"
+                        autocomplete="tel"
+                        inputmode="tel"
+                    >
+
+                </label>
+
+
+                <label>
+
+                    Sales Email
+
+                    <input
+                        id="salesEmail"
+                        type="email"
+                        placeholder="e.g. name@example.com"
+                        autocomplete="email"
+                        inputmode="email"
+                    >
+
+                </label>
+
+
+                <div class="button-row">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="
+                            isSupplyOnly()
+                                ? showPage(9)
+                                : showPage(12)
+                        "
+                    >
+                        ← Back
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        onclick="proceedToQuotationPreview()"
+                    >
+                        Preview Quotation →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAGE 14: QUOTATION PREVIEW
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page14"
+        >
+
+            <div class="page-heading">
+
+                <h2>
+                    Quotation Preview
+                </h2>
+
+                <p>
+                    This preview matches the content used to generate
+                    the PDF.
+                </p>
+
+            </div>
+
+
+            <div id="quotationPreview"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="site-footer">
+
+        <p>
+            Onsite Quotation —
+            © <span id="currentYear"></span>
+            Moses Ntella Taa
+        </p>
+
+        <p>
+
+            <a href="mailto:hvacmsaintern@hotpoint.co.ke">
+                hvacmsaintern@hotpoint.co.ke
+            </a>
+
+        </p>
+
+    </footer>
+
+
+    <!--
+        Combine JavaScript Sections 1–9 into one file named
+        script.js and place it in the same folder as index.html.
+    -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
