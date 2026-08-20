@@ -5668,7 +5668,7 @@ async function generateQuotation() {
 
         headerData =
             await imageToDataURL(
-                "header.jpeg"
+                "header.jpg"
             );
 
     } catch (error) {
