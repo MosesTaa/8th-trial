@@ -1,22 +1,17 @@
 :root {
     --primary: #075985;
     --primary-dark: #0c4a6e;
-    --secondary: #0891b2;
-    --accent: #f59e0b;
-    --success: #16a34a;
-    --danger: #dc2626;
-    --button-border: #2563eb;
-    --background: #eef7fb;
-    --card: #ffffff;
-    --text: #172033;
+    --secondary: #e0f2fe;
+    --background: #f1f5f9;
+    --surface: #ffffff;
+    --text: #1e293b;
     --muted: #64748b;
-    --border: #dbe5ec;
-    --shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+    --border: #cbd5e1;
+    --button-border: #2563eb;
+    --danger: #dc2626;
+    --radius: 14px;
+    --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
-
-/* =========================================================
-   GENERAL STYLES
-   ========================================================= */
 
 * {
     box-sizing: border-box;
@@ -28,58 +23,56 @@ html {
 
 body {
     margin: 0;
-    min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
+    min-width: 280px;
     color: var(--text);
-    background: linear-gradient(
-        135deg,
-        #e0f2fe 0%,
-        #f8fafc 45%,
-        #ecfeff 100%
-    );
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    background: var(--background);
+    -webkit-text-size-adjust: 100%;
 }
 
-/* =========================================================
-   HEADER
-   ========================================================= */
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+/* HEADER */
 
 .top-header {
-    padding: 24px 18px;
+    padding: 20px max(16px, env(safe-area-inset-right))
+        20px max(16px, env(safe-area-inset-left));
     color: #ffffff;
     text-align: center;
     background: linear-gradient(
         135deg,
         var(--primary-dark),
-        var(--secondary)
+        var(--primary)
     );
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow);
 }
 
 .top-header h1 {
     margin: 0;
-    font-size: 28px;
+    font-size: clamp(1.55rem, 6vw, 2.2rem);
 }
 
 .top-header p {
-    margin: 7px 0 0;
-    font-size: 14px;
+    margin: 5px 0 0;
     opacity: 0.9;
 }
 
-/* =========================================================
-   MAIN APP CONTAINER
-   ========================================================= */
+/* APPLICATION */
 
 .app-container {
-    width: 100%;
-    max-width: 850px;
-    margin: 0 auto;
-    padding: 25px 15px 40px;
+    width: min(100% - 24px, 920px);
+    margin: 22px auto;
 }
 
 .page {
     display: none;
-    animation: fadeIn 0.25s ease;
+    animation: fadeIn 0.2s ease;
 }
 
 .page.active {
@@ -89,7 +82,7 @@ body {
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(5px);
     }
 
     to {
@@ -98,155 +91,119 @@ body {
     }
 }
 
-/* =========================================================
-   PAGE HEADINGS
-   ========================================================= */
+/* PAGE HEADINGS */
 
 .page-heading {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
+    margin: 0 0 15px;
 }
 
 .page-heading h2 {
     margin: 0 0 5px;
-    font-size: 23px;
+    font-size: clamp(1.3rem, 5vw, 1.75rem);
 }
 
 .page-heading p {
     margin: 0;
     color: var(--muted);
-    font-size: 14px;
 }
 
-.step-number {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 45px;
-    height: 45px;
-    min-width: 45px;
-    border-radius: 50%;
-    color: #ffffff;
-    font-size: 18px;
-    font-weight: bold;
-    background: linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary)
-    );
-    box-shadow: 0 5px 15px rgba(8, 145, 178, 0.25);
-}
-
-/* =========================================================
-   CARDS
-   ========================================================= */
+/* CARDS */
 
 .card {
-    margin-bottom: 20px;
-    padding: 20px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    margin-bottom: 16px;
+    padding: clamp(16px, 4vw, 24px);
+    background: var(--surface);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius);
     box-shadow: var(--shadow);
 }
 
+.card h2,
 .card h3 {
     margin-top: 0;
 }
 
-/* =========================================================
-   INPUTS AND SELECT FIELDS
-   ========================================================= */
+/* FORM FIELDS */
 
-.input-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
+label {
+    display: block;
+    margin: 0 0 15px;
+    color: #334155;
+    font-weight: 700;
 }
 
-.input-row input {
-    flex: 1;
-}
-
-input,
+input:not([type="checkbox"]),
 select,
 textarea {
+    display: block;
     width: 100%;
+    min-height: 48px;
     margin-top: 7px;
-    margin-bottom: 15px;
-    padding: 13px 14px;
+    padding: 11px 12px;
     color: var(--text);
-    font-family: inherit;
-    font-size: 16px;
     background: #ffffff;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--border);
     border-radius: 10px;
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: var(--secondary);
-    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12);
+    border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
 }
 
-/* =========================================================
-   ALL BUTTONS
-   This includes Supply Only and Supply and Commissioning
-   ========================================================= */
+/* ALL BUTTONS */
 
-button,
-.primary-button,
-.secondary-button,
-.danger-button,
-.edit-button,
-.remove-input {
-    font-family: inherit;
-    font-weight: bold;
+button {
+    min-height: 48px;
+    padding: 11px 16px;
+    font-weight: 700;
     border: 2px solid var(--button-border) !important;
     border-radius: 10px;
     cursor: pointer;
+    touch-action: manipulation;
     transition:
-        background-color 0.15s ease,
-        border-color 0.15s ease,
         color 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease,
         box-shadow 0.15s ease,
         transform 0.15s ease;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Turn every button red while pressed */
+/* Red while clicked or pressed */
 
-button:active,
-.primary-button:active,
-.secondary-button:active,
-.danger-button:active,
-.edit-button:active,
-.remove-input:active {
+button:active {
     color: #ffffff !important;
     background: var(--danger) !important;
     border-color: var(--danger) !important;
     transform: scale(0.97);
 }
 
-/* Keyboard accessibility */
+/* Red when JavaScript applies selected or active class */
+
+button.selected,
+button.active,
+.quotation-type-options button.selected,
+.quotation-type-options button.active {
+    color: #ffffff !important;
+    background: var(--danger) !important;
+    border-color: var(--danger) !important;
+}
 
 button:focus-visible {
     outline: 3px solid rgba(37, 99, 235, 0.3);
     outline-offset: 2px;
 }
-
-/* Disabled buttons */
 
 button:disabled {
     cursor: not-allowed;
@@ -254,187 +211,169 @@ button:disabled {
     transform: none;
 }
 
-/* =========================================================
-   PRIMARY BUTTON
-   ========================================================= */
+/* PRIMARY BUTTON */
 
 .primary-button {
-    margin-top: 12px;
-    padding: 14px 18px;
     color: #ffffff;
-    background: linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary)
-    );
+    background: var(--primary);
 }
 
 .primary-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 15px rgba(7, 89, 133, 0.25);
+    background: var(--primary-dark);
+    box-shadow: 0 5px 14px rgba(7, 89, 133, 0.25);
 }
 
-/* =========================================================
-   SECONDARY BUTTON
-   ========================================================= */
+/* SECONDARY BUTTON */
 
 .secondary-button {
-    margin-top: 10px;
-    padding: 12px 16px;
     color: var(--primary-dark);
-    background: #e0f2fe;
+    background: var(--secondary);
 }
 
 .secondary-button:hover {
     background: #bae6fd;
 }
 
-/* =========================================================
-   DANGER, EDIT AND REMOVE BUTTONS
-   ========================================================= */
+/* DANGER AND DELETE BUTTONS */
 
-.danger-button {
-    padding: 9px 12px;
-    color: var(--danger);
+.danger-button,
+.delete-button {
+    color: #b91c1c;
     background: #fee2e2;
 }
 
-.danger-button:hover {
+.danger-button:hover,
+.delete-button:hover {
     color: #ffffff;
     background: var(--danger);
 }
-
-.edit-button {
-    padding: 9px 12px;
-    color: #92400e;
-    background: #fef3c7;
-}
-
-.edit-button:hover {
-    background: #fde68a;
-}
-
-.remove-input {
-    width: 45px;
-    height: 45px;
-    padding: 0;
-    color: var(--danger);
-    font-size: 22px;
-    background: #fee2e2;
-}
-
-.remove-input:hover {
-    color: #ffffff;
-    background: var(--danger);
-}
-
-/* =========================================================
-   FULL-WIDTH BUTTON
-   ========================================================= */
 
 .full-width {
     width: 100%;
+    margin-top: 10px;
 }
 
-/* =========================================================
-   ROOM, PREVIEW AND PRICE CARDS
-   ========================================================= */
+/* BUTTON LAYOUTS */
 
-.room-card,
-.preview-item,
-.price-card {
-    margin-bottom: 12px;
-    padding: 15px;
-    background: #f8fafc;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-}
-
-.room-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.button-row,
+.preview-controls,
+.quotation-type-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+    margin-top: 18px;
 }
 
-.room-name {
-    font-size: 16px;
-    font-weight: bold;
+/* PAGE 1 QUOTATION TYPE BUTTONS */
+
+.quotation-type-options button {
+    width: 100%;
+    min-height: 70px;
+    padding: 16px;
+    font-size: 1rem;
+    border: 3px solid var(--button-border) !important;
 }
 
-/* =========================================================
-   BUTTON GROUPS
-   ========================================================= */
+/* ROOM INPUTS */
 
-.button-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-}
-
-/* =========================================================
-   INFORMATION BOX
-   ========================================================= */
-
-.info-box {
-    margin: 15px 0;
-    padding: 14px;
-    color: #075985;
-    line-height: 1.6;
-    background: #e0f2fe;
-    border: 1px solid #bae6fd;
-    border-radius: 12px;
-}
-
-/* =========================================================
-   EMPTY MESSAGE
-   ========================================================= */
-
-.empty-message {
-    padding: 20px;
-    color: var(--muted);
-    text-align: center;
-}
-
-/* =========================================================
-   SUCCESS PAGE
-   ========================================================= */
-
-.success-card {
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.success-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70px;
-    height: 70px;
-    margin: 0 auto 20px;
-    color: var(--success);
-    font-size: 40px;
-    font-weight: bold;
-    background: #dcfce7;
-    border-radius: 50%;
-}
-
-.success-card h2 {
+.room-input-row,
+.input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 48px;
+    gap: 8px;
+    align-items: end;
     margin-bottom: 10px;
 }
 
-.success-card p {
-    color: var(--muted);
+.room-input-row input {
+    margin: 0;
 }
 
-/* =========================================================
-   FOOTER
-   ========================================================= */
+.remove-input {
+    min-width: 48px;
+    padding: 0;
+    color: var(--danger);
+    background: #fee2e2;
+    font-size: 1.5rem;
+}
+
+/* INFORMATION BOXES */
+
+.info-box,
+.empty-message {
+    margin: 12px 0;
+    padding: 13px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+}
+
+/* TABLES */
+
+table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    color: #ffffff;
+    background: var(--primary);
+}
+
+td.number,
+th.number,
+.number {
+    text-align: right;
+}
+
+/* QUOTATION */
+
+.quotation-document {
+    padding: clamp(12px, 3vw, 28px);
+    background: #ffffff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+}
+
+.quotation-document > h1 {
+    color: var(--primary);
+    text-align: center;
+}
+
+.quotation-section {
+    margin: 22px 0;
+}
+
+.quotation-section h3 {
+    color: var(--primary);
+}
+
+.grand-total {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px;
+    color: #ffffff;
+    background: var(--primary);
+    border-radius: 10px;
+    font-weight: 800;
+}
+
+/* FOOTER */
 
 .site-footer {
-    padding: 25px 15px;
+    padding: 22px 16px calc(22px + env(safe-area-inset-bottom));
     color: var(--muted);
-    font-size: 13px;
     text-align: center;
 }
 
@@ -444,69 +383,53 @@ button:disabled {
 
 .site-footer a {
     color: var(--primary);
-    text-decoration: none;
 }
 
-.site-footer a:hover {
-    text-decoration: underline;
-}
+/* MOBILE */
 
-/* =========================================================
-   MOBILE RESPONSIVE STYLES
-   ========================================================= */
-
-@media (max-width: 600px) {
-    .top-header {
-        padding: 20px 14px;
-    }
-
-    .top-header h1 {
-        font-size: 24px;
-    }
-
+@media (max-width: 620px) {
     .app-container {
-        padding: 18px 10px 30px;
+        width: min(100% - 18px, 920px);
+        margin-top: 14px;
     }
 
-    .card {
-        padding: 15px;
-        border-radius: 13px;
+    .button-row,
+    .preview-controls,
+    .quotation-type-options {
+        grid-template-columns: 1fr;
     }
 
-    .page-heading {
-        gap: 10px;
-    }
-
-    .page-heading h2 {
-        font-size: 19px;
-    }
-
-    .step-number {
-        width: 40px;
-        height: 40px;
-        min-width: 40px;
-        font-size: 16px;
-    }
-
-    .room-card {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .button-group {
+    .button-row button,
+    .preview-controls button,
+    .quotation-type-options button {
         width: 100%;
     }
 
-    .button-group button {
-        flex: 1;
+    .grand-total {
+        flex-direction: column;
+    }
+}
+
+/* PRINTING */
+
+@media print {
+    body {
+        background: #ffffff;
     }
 
-    .input-row {
-        align-items: center;
+    .top-header,
+    .site-footer,
+    .preview-controls {
+        display: none !important;
     }
 
-    .primary-button,
-    .secondary-button {
-        min-height: 46px;
+    .app-container {
+        width: 100%;
+        margin: 0;
+    }
+
+    .quotation-document {
+        padding: 0;
+        box-shadow: none;
     }
 }
